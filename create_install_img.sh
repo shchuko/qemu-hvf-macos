@@ -1,6 +1,11 @@
 #!/bin/bash
 
-OS_NAME="Catalina"
+# Install app can be changed by overriding OS_NAME variable
+if [[ -z "$OS_NAME" ]]; then
+  OS_NAME="Catalina"
+  echo "> Assuming: OS_NAME=Cataina"
+fi
+
 INSTALL_APP="/Applications/Install macOS $OS_NAME.app"
 CREATE_MEDIA_APP="$INSTALL_APP/Contents/Resources/createinstallmedia"
 
