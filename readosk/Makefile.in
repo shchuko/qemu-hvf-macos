@@ -1,0 +1,32 @@
+CC=clang
+CFLAGS=-c -Wall
+LDFLAGS=-framework IOKit
+TARGET=readosk
+
+prefix=@prefix@
+exec_prefix = @exec_prefix@
+bindir = @bindir@
+
+all: $(TARGET)
+
+$(TARGET): main.o
+	$(CC) $(LDFLAGS) main.o -o $(TARGET)
+	chmod 755 $(TARGET)
+
+main.o: main.c
+	$(CC) $(CFLAGS) main.c 
+
+install:
+	mkdir -p $(bindir)
+	install ./$(TARGET) $(bindir)/$(TARGET)
+
+uninstall:
+	rm $(bindir)/$(TARGET)
+
+clean:
+	rm *.o $(TARGET)
+
+distclean: clean
+	rm Makefile config.log config.status
+
+.PHONY: all clean distclean install uninstall
