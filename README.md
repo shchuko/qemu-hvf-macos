@@ -15,7 +15,7 @@ Examples of running macOS over QEMU on Intel-based Mac hosts with Hypervisor.Fra
 
 - XCODE Command Line Tools
 
-- [ninja](https://formulae.brew.sh/formula/ninja) (required for QEMU build)
+- [QEMU build requirements](https://wiki.qemu.org/Hosts/Mac)
 
 ## Repo content 
 
