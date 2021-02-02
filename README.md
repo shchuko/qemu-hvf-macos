@@ -27,7 +27,7 @@ Examples of running macOS over QEMU on Intel-based Mac hosts with Hypervisor.Fra
 
 - [get-firmware.sh](get-firmware.sh) - Patched UEFI download & unpack script
 
-- [create-install-img.sh](create-install-img.sh) - Install disk image creation script
+- [create-install-img.sh](create-install-img.sh) - Install disk image creation script. May ask sudo password!
 
 - [boot.sh](boot.sh) - VM boot script. Run `./boot.sh -help` for more information
 
@@ -46,7 +46,7 @@ The simplest way to install macOS is:
 Replace 'Catalina' with required OS name (default is 'Catalina') to choose 
 the app you wanted: `/Applications/Install macOS Catalina.app`. The script downloads and 
 builds QEMU, downloads UEFI, creates installation media, builds `readosk` tool, retrieves 
-OSK key, creates drive to install macOS onto, starts QEMU VM
+OSK key, creates drive to install macOS onto, starts QEMU VM. May ask sudo password!
 
 Continue installation there. You may need to choose the startup disk from UEFI boot menu, 
 if you run into EFI shell
