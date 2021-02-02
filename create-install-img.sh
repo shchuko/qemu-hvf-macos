@@ -25,6 +25,7 @@ if [ ! -f "$CREATE_MEDIA_APP" ]; then
 fi
 
 echo "> Creating temporary DMG image..."
+[[ -f "$IMAGE_NAME_DMG" ]] && rm "$IMAGE_NAME_DMG"
 hdiutil create -o "$IMAGE_NAME" -size 9G -layout GPTSPUD -fs HFS+J || exit 1
 
 echo "> Mounting at $MOUNTPOINT..."
@@ -43,4 +44,3 @@ echo "> Cleaning..."
 rm "$IMAGE_NAME_DMG"
 
 echo "> Image is written to $IMAGE_NAME_RAW"
-

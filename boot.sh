@@ -1,5 +1,6 @@
-#!/usr/bin/env bash
-# QEMU/HVF macOS boot example script
+#!/bin/bash
+
+# QEMU/HVF macOS boot script example
 
 loadDefaults() {
   QEMU_X86_64="qemu-system-x86_64"
@@ -16,8 +17,9 @@ loadDefaults() {
   SMP=2
   OSK=""
 
-  FIRMWARE_CODE="OVMF_DARWIN_CODE.fd"
-  FIRMWARE_VARS="OVMF_DARWIN_VARS.fd"
+  FIRMWARE_DIR="Firmware"
+  FIRMWARE_CODE="$FIRMWARE_DIR/OVMF_DARWIN_CODE.fd"
+  FIRMWARE_VARS="$FIRMWARE_DIR/OVMF_DARWIN_VARS.fd"
 }
 
 printHelp() {
@@ -66,10 +68,12 @@ boot() {
     INSTALLMEDIA_ARGS=(
       -drive "id=InstallMedia,if=none,file=$INSTALL_MEDIA,format=$INSTALL_MEDIA_FMT"
       -device "ide-hd,bus=sata.3,drive=InstallMedia"
-      )
+    )
   fi
 
   QEMU_ARGS=(
+    # Using host CPU may produce kernel panics, switch to Penryn if needed
+    #-cpu "Penryn,vmware-cpuid-freq=on"
     -cpu "host,vmware-cpuid-freq=on"
     -machine "q35"
     -m "$RAM"
@@ -89,8 +93,7 @@ boot() {
     -vga "std"
     -nic "user,model=vmxnet3"
     -boot c
-    )
-
+  )
 
   "$QEMU_X86_64" "${QEMU_ARGS[@]}"
 }
