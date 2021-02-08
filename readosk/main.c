@@ -2,6 +2,10 @@
  *
  * OSK key retrieval utility 
  *
+ * Inspired by:
+ *   https://web.archive.org/web/20200603015401/http://www.osxbook.com/book/bonus/chapter7/tpmdrmmyth/
+ *   https://opensource.apple.com/source/PowerManagement/PowerManagement-211/pmconfigd/PrivateLib.c
+ *
  * > IOKit framework required
  *
  * Author: Vladislav Yaroshchuk <yaroshchuk2000@gmail.com>
