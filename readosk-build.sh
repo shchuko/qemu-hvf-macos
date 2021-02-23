@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 #
 # readosk tool build script
 #
@@ -9,13 +10,10 @@ READOSK_DIR="./readosk"
 READOSK_EXEC="$READOSK_DIR/readosk"
 
 if [[ -f "$READOSK_EXEC" ]]; then
-  echo "$READOSK_EXEC"
   exit 0
 fi
 
-cd "$READOSK_DIR" || exit 1
+cd "$READOSK_DIR"
 ./configure
-make || exit 1
-cd - || exit 1
-
-echo "$READOSK_EXEC"
+make
+cd -

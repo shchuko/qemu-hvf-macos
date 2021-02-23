@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 #
 # Firmware retrieval script
 #
@@ -20,10 +21,8 @@ if [[ -f "$FIRMWARE_CODE" ]] && [[ -f "$FIRMWARE_VARS" ]]; then
   exit 0
 fi
 
-wget "$URL" || exit 1
-
-yes | unzip "$ZIP_NAME" -d "$FIRMWARE_DIR" || exit 1
-
+wget "$URL"
+yes | unzip "$ZIP_NAME" -d "$FIRMWARE_DIR"
 rm "${ZIP_NAME:?}"
 
 echo "Firmware downloaded: $TAG_NAME"
