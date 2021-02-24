@@ -9,7 +9,7 @@
 
 function setVars() {
   # OS name to install
-  OS_NAME="Catalina"
+  OS="Catalina"
 
   # Don't attach install media image by default
   INSTALL_OS_FLAG="False"
@@ -33,7 +33,7 @@ function readArgs() {
       ;;
 
     -os)
-      OS_NAME="$2"
+      OS="$2"
       shift
       ;;
 
@@ -67,8 +67,7 @@ function loadComponents() {
 }
 
 function createInstallImg() {
-  export OS_NAME
-  ./create-install-img.sh
+  DESTDIR="." OS_NAME="$OS" ./create-install-img.sh
   return $?
 }
 
