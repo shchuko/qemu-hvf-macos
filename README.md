@@ -19,6 +19,8 @@ Examples of running macOS over QEMU on Intel-based Mac hosts with Hypervisor.Fra
 
 ## Repo content
 
+- [vm-run-install.sh](vm-run-install.sh) - macOS installation & run script. Invokes tools below in correct order
+
 - [readosk](readosk) - OSK Key retrieval tool sources
 
 - [readosk-build.sh](readosk-build.sh) - readosk build script
@@ -30,8 +32,6 @@ Examples of running macOS over QEMU on Intel-based Mac hosts with Hypervisor.Fra
 - [create-install-img.sh](create-install-img.sh) - Install disk image creation script. May ask sudo password!
 
 - [boot.sh](boot.sh) - VM boot script. Run `./boot.sh -help` for more information
-
-- [vm-run-install.sh](vm-run-install.sh) - macOS installation & run script. Invoked scripts below in correct order
 
 - [tap-up.sh](tap-up.sh) - tap interface UP script example
 
