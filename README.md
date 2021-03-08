@@ -69,3 +69,9 @@ Required Tun/Tap kernel extension can be found [here](https://github.com/Tunnelb
 **Note:** building QEMU with glib v2.66.7 **corrupts** tun/tap networking, the problem is needed to be investigated. Luckily, 
 everything works fine with glib v2.58.3
 
+To use tap-networking run:
+
+```bash
+./vm-run-install.sh -tap-net
+```
+
