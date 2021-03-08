@@ -13,7 +13,7 @@ loadDefaults() {
   DRIVE="drive.qcow2"
   DRIVE_FMT="qcow2"
 
-  RAM=2048
+  RAM=4096M
   SMP=2
   OSK=""
 
