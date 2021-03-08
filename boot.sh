@@ -93,8 +93,9 @@ readArgs() {
 boot() {
   if [[ "$ATTACH_INSTALL_MEDIA" == "True" ]]; then
     INSTALLMEDIA_ARGS=(
-      -drive "id=InstallMedia,if=none,file=$INSTALL_MEDIA,format=$INSTALL_MEDIA_FMT"
-      -device "ide-hd,bus=sata.3,drive=InstallMedia"
+      -drive "id=InstallMedia,if=virtio,file=$INSTALL_MEDIA,format=$INSTALL_MEDIA_FMT"
+      #-drive "id=InstallMedia,if=none,file=$INSTALL_MEDIA,format=$INSTALL_MEDIA_FMT"
+      #-device "ide-hd,bus=sata.3,drive=InstallMedia"
     )
   fi
 
@@ -118,15 +119,16 @@ boot() {
     -smp "$SMP"
     -accel "hvf"
     -smbios "type=2"
-    -drive "id=Drive,if=none,file=$DRIVE,format=$DRIVE_FMT"
+    -drive "id=Drive,if=virtio,file=$DRIVE,format=$DRIVE_FMT"
+    #-drive "id=Drive,if=none,file=$DRIVE,format=$DRIVE_FMT"
     -drive "if=pflash,format=raw,readonly,file=$FIRMWARE_CODE"
     -drive "if=pflash,format=raw,file=$FIRMWARE_VARS"
     -usb
     -device "usb-kbd"
     -device "usb-tablet"
     -device "isa-applesmc,osk=$OSK"
-    -device "ich9-ahci,id=sata"
-    -device "ide-hd,bus=sata.2,drive=Drive"
+    #-device "ich9-ahci,id=sata"
+    #-device "ide-hd,bus=sata.2,drive=Drive"
     "${INSTALLMEDIA_ARGS[@]}"
     -vga "virtio"
     "${NET[@]}"
