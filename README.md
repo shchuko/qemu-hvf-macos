@@ -33,9 +33,9 @@ Examples of running macOS over QEMU on Intel-based Mac hosts with Hypervisor.Fra
 
 - [boot.sh](boot.sh) - VM boot script. Run `./boot.sh -help` for more information
 
-- [tap-up.sh](tap-up.sh) - tap interface UP script example
+- [tap-up.sh](tap-up.sh) - tap interface UP script, adds `tapX` used by VM to `bridge0`
 
-- [tap-down.sh](tap-down.sh) - tap interface DOWN script example
+- [tap-down.sh](tap-down.sh) - tap interface DOWN script, , removes `tapX` used by VM from `bridge0`
 
 ## Installation HOWTO
 
@@ -74,4 +74,6 @@ To use tap-networking run:
 ```bash
 ./vm-run-install.sh -tap-net
 ```
+
+Modify [tap-up.sh](tap-up.sh)/[tap-down.sh](tap-down.sh) if needed
 
