@@ -23,6 +23,12 @@ function setVars() {
   QEMU_SYSTEM_X86_64="./qemu/build/qemu-system-x86_64"
   QEMU_IMG="./qemu/build/qemu-img"
   READOSK="./readosk/readosk"
+
+  # No external options by default
+  OPTIONS=()
+
+  TAP_UP_SCRIPT="./tap-up.sh"
+  TAP_DOWN_SCRIPT="./tap-down.sh"
 }
 
 function readArgs() {
@@ -37,6 +43,13 @@ function readArgs() {
       shift
       ;;
 
+    -tap-net)
+      OPTIONS+=(
+      "-tap"
+      "-t-up" "$TAP_UP_SCRIPT"
+      "-t-down" "$TAP_DOWN_SCRIPT"
+      )
+      ;;
     *)
       shift
       ;;
@@ -80,17 +93,8 @@ function createMainDrive() {
   return $?
 }
 
-function bootInstall() {
-  if ! createInstallImg; then
-    echo "Install image creation failed"
-    return 1
-  fi
-
-  ./boot.sh -install -qemu "$QEMU_SYSTEM_X86_64" -osk "$($READOSK)"
-}
-
-function bootNoInstall() {
-  ./boot.sh -qemu "$QEMU_SYSTEM_X86_64" -osk "$($READOSK)"
+function startBoot() {
+    ./boot.sh -qemu "$QEMU_SYSTEM_X86_64" -osk "$($READOSK)" "${OPTIONS[@]}"
 }
 
 setVars
@@ -107,11 +111,12 @@ if ! createMainDrive; then
 fi
 
 if [[ "$INSTALL_OS_FLAG" == "True" ]]; then
-  bootInstall
-  EXITCODE=$?
-else
-  bootNoInstall
-  EXITCODE=$?
+  if ! createInstallImg; then
+    echo "Install image creation failed"
+    exit 1
+  fi
+
+  OPTIONS+=("-install")
 fi
 
-exit $EXITCODE
+startBoot

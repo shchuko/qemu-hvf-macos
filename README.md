@@ -4,9 +4,9 @@ Examples of running macOS over QEMU on Intel-based Mac hosts with Hypervisor.Fra
 
 ## A couple of required things
 
-- [Patched QEMU](https://github.com/shchuko/qemu/tree/v5.2.0/darwin-support) (patches haven't been 
-  merged into qemu master yet)
-  
+- [Patched QEMU](https://github.com/shchuko/qemu/tree/v5.2.0/darwin-support) (patches haven't been merged into qemu
+  master yet)
+
 - [Patched UEFI](https://github.com/shchuko/OvmfDarwinPkg)
 
 - [OSK Key retrieval tool](readosk) - required for AppleSMC emulation
@@ -17,7 +17,7 @@ Examples of running macOS over QEMU on Intel-based Mac hosts with Hypervisor.Fra
 
 - [QEMU build requirements](https://wiki.qemu.org/Hosts/Mac)
 
-## Repo content 
+## Repo content
 
 - [readosk](readosk) - OSK Key retrieval tool sources
 
@@ -32,6 +32,10 @@ Examples of running macOS over QEMU on Intel-based Mac hosts with Hypervisor.Fra
 - [boot.sh](boot.sh) - VM boot script. Run `./boot.sh -help` for more information
 
 - [vm-run-install.sh](vm-run-install.sh) - macOS installation & run script. Invoked scripts below in correct order
+
+- [tap-up.sh](tap-up.sh) - tap interface UP script example
+
+- [tap-down.sh](tap-down.sh) - tap interface DOWN script example
 
 ## Installation HOWTO
 
@@ -57,16 +61,11 @@ After installation complete, to boot your guest macOS just run
 ./vm-run-install.sh
 ```
 
+## Networking
 
+By default [boot.sh](boot.sh) will run QEMU using `-nic user`. Also, **tap networking is supported**. 
+Required Tun/Tap kernel extension can be found [here](https://github.com/Tunnelblick/Tunnelblick/tree/master/third_party)
 
-
-
-
-
-
-
-
-
-
-
+**Note:** building QEMU with glib v2.66.7 **corrupts** tun/tap networking, the problem is needed to be investigated. Luckily, 
+everything works fine with glib v2.58.3
 
