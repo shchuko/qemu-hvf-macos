@@ -4,8 +4,8 @@ Examples of running macOS over QEMU on Intel-based Mac hosts with Hypervisor.Fra
 
 ## A couple of required things
 
-- [Patched QEMU](https://github.com/shchuko/qemu/tree/v5.2.0/darwin-support) (patches haven't been merged into qemu
-  master yet)
+- [Patched QEMU](https://github.com/shchuko/qemu/tree/v5.2.0/darwin-support) (patches are merged into qemu
+  master, but not released)
 
 - [Patched UEFI](https://github.com/shchuko/OvmfDarwinPkg)
 
