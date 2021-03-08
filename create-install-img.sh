@@ -10,7 +10,8 @@ set -xeuo pipefail
 
 OS_NAME="${OS_NAME:-Catalina}"
 MEDIA_CREATOR="/Applications/Install macOS $OS_NAME.app/Contents/Resources/createinstallmedia"
-IMAGE_NAME="${DESTDIR:-out}/BaseSystem"
+DESTDIR="${DESTDIR:-out}"
+IMAGE_NAME="$DESTDIR/BaseSystem"
 TARGET_IMAGE_NAME="${TARGET_IMAGE_NAME:-$IMAGE_NAME.cdr}"
 MOUNTPOINT="/Volumes/install_build_$OS_NAME"
 DISK_DEV=""
@@ -50,7 +51,7 @@ mkdir -p "$DESTDIR"
 hdiutil create -o "$IMAGE_NAME" -size "$IMAGE_SIZE" -layout GPTSPUD -fs HFS+J
 DISK_DEV=$(hdiutil attach "$IMAGE_NAME.dmg" -noverify -mountpoint "$MOUNTPOINT" | tee "$TTY" | awk 'NR==1 {print $1}')
 sudo "$MEDIA_CREATOR" --volume "$MOUNTPOINT" --nointeraction
-hdiutil detach "$DISK_DEV"
+hdiutil detach "$DISK_DEV" && DISK_DEV=""
 
 # here hdiutil appends ".cdr" suffix to given output name
 hdiutil convert "$IMAGE_NAME.dmg" -format UDTO -o "$IMAGE_NAME"
