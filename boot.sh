@@ -128,7 +128,7 @@ boot() {
     -device "ich9-ahci,id=sata"
     -device "ide-hd,bus=sata.2,drive=Drive"
     "${INSTALLMEDIA_ARGS[@]}"
-    -vga "std"
+    -vga "virtio"
     "${NET[@]}"
     -nodefaults
   )
