@@ -29,6 +29,7 @@ function onExit() {
 trap onExit EXIT
 
 if qemuBinExists; then
+  echo "QEMU building skipped, required binaries exist"
   exit
 fi
 

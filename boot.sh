@@ -140,4 +140,5 @@ boot() {
 
 loadDefaults
 readArgs "$@"
+echo "VM boot started.."
 boot

@@ -16,7 +16,7 @@ FIRMWARE_INFO="$FIRMWARE_DIR/FV_INFO.CONF"
 [[ ! -d "$FIRMWARE_DIR" ]] && mkdir -p "$FIRMWARE_DIR"
 
 if [[ -f "$FIRMWARE_CODE" ]] && [[ -f "$FIRMWARE_VARS" ]]; then
-  echo "Downloaded firmware found: "
+  echo "Firmware retrieval skipped, locally exists at: "
   find "$FIRMWARE_DIR" -type f
   exit 0
 fi
