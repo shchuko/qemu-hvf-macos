@@ -59,6 +59,12 @@ function readArgs() {
 }
 
 function loadComponents() {
+  # Build GLib
+  if ! ./glib-build.sh; then
+    echo "GLib build failed"
+    return 1
+  fi
+
   # QEMU download and build
   if ! ./qemu-build.sh; then
     echo "QEMU build failed"

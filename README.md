@@ -26,6 +26,8 @@ Examples of running macOS over QEMU on Intel-based Mac hosts with Hypervisor.Fra
 - [readosk-build.sh](readosk-build.sh) - readosk build script
 
 - [qemu-build.sh](qemu-build.sh) - QEMU clone & build script
+  
+- [glib-build.sh](glib-build.sh) - GLib build script
 
 - [get-firmware.sh](get-firmware.sh) - Patched UEFI download & unpack script
 

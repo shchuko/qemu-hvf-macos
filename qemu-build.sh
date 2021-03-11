@@ -10,6 +10,9 @@ QEMU_DIR="./qemu"
 QEMU_BINDIR="$QEMU_DIR/build"
 QEMU_SYSTEM_X86_64="$QEMU_BINDIR/qemu-system-x86_64"
 QEMU_IMG="$QEMU_BINDIR/qemu-img"
+GLIB_DESTDIR=${GLIB_DESTDIR:-"$PWD/glib-destdir"}
+CUSTOM_PKG_CONFIG_PATH="$GLIB_DESTDIR/lib/pkgconfig"
+PKG_CONFIG_PATH=${PKG_CONFIG_PATH:-""}
 
 function qemuBinExists() {
   if [[ -f "$QEMU_IMG" ]] && [[ -f "$QEMU_SYSTEM_X86_64" ]]; then
@@ -35,6 +38,6 @@ if [[ ! -d "$QEMU_DIR" ]]; then
 fi
 
 cd "$QEMU_DIR"
-./configure --target-list=x86_64-softmmu
+PKG_CONFIG_PATH="$CUSTOM_PKG_CONFIG_PATH:$PKG_CONFIG_PATH" ./configure --target-list=x86_64-softmmu
 make
 cd -
