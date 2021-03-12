@@ -76,10 +76,7 @@ By default [boot.sh](boot.sh) will run QEMU using `-nic user`. Usage:
 
 ### Tap networking
 
-Requires Tun/Tap kernel extension that can be
-found [here](https://github.com/Tunnelblick/Tunnelblick/tree/master/third_party). To use tap networking run:
-
-Most likely, your preparation steps should be:
+Requires Tun/Tap kernel extension: `brew install tuntap`. Most likely, your preparation steps should be:
 
 ```bash
 sudo ./bridge-utils/br-create.sh bridge0
@@ -97,7 +94,7 @@ sudo ./bridge-utils/br-destroy.sh bridge0
 sudo ./bridge-utils/br-destroy.sh
 ```
 
-Running VM with tap-networking:
+To run VM with tap-networking:
 
 ```bash
 ./vm-run-install.sh -tap-net
