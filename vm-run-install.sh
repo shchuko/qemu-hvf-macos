@@ -27,8 +27,8 @@ function setVars() {
   # No external options by default
   OPTIONS=()
 
-  TAP_UP_SCRIPT="./tap-up.sh"
-  TAP_DOWN_SCRIPT="./tap-down.sh"
+  TAP_UP_SCRIPT="./bridge-utils/br-add-member.sh"
+  TAP_DOWN_SCRIPT="./bridge-utils/br-rm-member.sh"
 }
 
 function readArgs() {
