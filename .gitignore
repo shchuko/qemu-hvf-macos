@@ -3,3 +3,4 @@ qemu
 BaseSystem.*
 drive.qcow2
 glib-destdir
+glib
