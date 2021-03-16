@@ -16,8 +16,8 @@ FIRMWARE_INFO="$FIRMWARE_DIR/FV_INFO.CONF"
 [[ ! -d "$FIRMWARE_DIR" ]] && mkdir -p "$FIRMWARE_DIR"
 
 if [[ -f "$FIRMWARE_CODE" ]] && [[ -f "$FIRMWARE_VARS" ]]; then
-  echo "Firmware retrieval skipped, locally exists at: "
-  find "$FIRMWARE_DIR" -type f
+  echo "Firmware retrieval skipped, locally exists: "
+  cat "$FIRMWARE_INFO"
   exit 0
 fi
 
