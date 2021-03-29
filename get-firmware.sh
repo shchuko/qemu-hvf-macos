@@ -5,7 +5,7 @@ set -euo pipefail
 #
 
 ZIP_NAME="OvmfDarwinBin.zip"
-TAG_NAME="v0.1"
+TAG_NAME="v0.2"
 URL="https://github.com/shchuko/OvmfDarwinPkg/releases/download/$TAG_NAME/$ZIP_NAME"
 
 FIRMWARE_DIR="./Firmware"
