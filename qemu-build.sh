@@ -1,10 +1,15 @@
 #!/bin/bash
 set -euo pipefail
-# QEMU Build script
 #
-# We need to use custom qemu-system-x86_64 build because required
-# patches haven't been merged to qemu/master yet
+# QEMU Build script#
+#  retrieve and build recent qemu v6.0.0 which includes patches:
+#  - rdmsr 35H: https://github.com/qemu/qemu/commit/027ac0cb516cca4ce8a88dcca2f759c77e0e374b
+#  - vmware-cpuid-freq: https://github.com/qemu/qemu/commit/3b502b0e470867369ba6e0a94e9ba6d91bb176c2
 #
+#  uses GitHub mirror because of --filter=blob:none support
+
+QEMU_GIT="https://github.com/qemu/qemu.git"
+QEMU_BRANCH="v6.0.0"
 
 QEMU_DIR="./qemu"
 QEMU_BINDIR="$QEMU_DIR/build"
@@ -34,8 +39,7 @@ if qemuBinExists; then
 fi
 
 if [[ ! -d "$QEMU_DIR" ]]; then
-  git clone --filter=blob:none --single-branch \
-    --branch "v5.2.0/darwin-support" "https://github.com/shchuko/qemu.git" "$QEMU_DIR"
+  git clone --filter=blob:none --single-branch --branch "$QEMU_BRANCH" "$QEMU_GIT" "$QEMU_DIR"
 fi
 
 cd "$QEMU_DIR"
