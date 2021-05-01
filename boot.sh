@@ -120,7 +120,7 @@ boot() {
     -accel "hvf"
     -smbios "type=2"
     -drive "id=Drive,if=none,file=$DRIVE,format=$DRIVE_FMT"
-    -drive "if=pflash,format=raw,readonly,file=$FIRMWARE_CODE"
+    -drive "if=pflash,format=raw,readonly=on,file=$FIRMWARE_CODE"
     -drive "if=pflash,format=raw,file=$FIRMWARE_VARS"
     -usb
     -device "usb-kbd"
