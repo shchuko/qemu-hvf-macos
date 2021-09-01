@@ -2,14 +2,14 @@
 set -euo pipefail
 #
 # QEMU Build script#
-#  retrieve and build recent qemu v6.0.0 which includes patches:
+#  retrieve and build recent qemu v6.1.0 which includes patches:
 #  - rdmsr 35H: https://github.com/qemu/qemu/commit/027ac0cb516cca4ce8a88dcca2f759c77e0e374b
 #  - vmware-cpuid-freq: https://github.com/qemu/qemu/commit/3b502b0e470867369ba6e0a94e9ba6d91bb176c2
-#
+#  - vmnet-* netdevs
 #  uses GitHub mirror because of --filter=blob:none support
 
-QEMU_GIT="https://github.com/qemu/qemu.git"
-QEMU_BRANCH="v6.0.0"
+QEMU_GIT="https://github.com/shchuko/qemu.git"
+QEMU_BRANCH="vmnet-v6.1.0-patches-v2"
 
 QEMU_DIR="./qemu"
 QEMU_BINDIR="$QEMU_DIR/build"
