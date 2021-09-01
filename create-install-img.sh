@@ -23,7 +23,7 @@ fi
 
 case "$OS_NAME" in
 "Big Sur")
-  IMAGE_SIZE="12G"
+  IMAGE_SIZE="14G"
   ;;
 *)
   IMAGE_SIZE="9G"
