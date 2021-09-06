@@ -7,7 +7,7 @@
 ##################
 QEMU_X86_64="qemu-system-x86_64"
 RAM=4096M
-SMP=2
+SMP=${SMP:-2}
 OSK=""
 
 DRIVES_OPTIONS=()
@@ -23,6 +23,10 @@ FIRMWARE_VARS="$FIRMWARE_DIR/OVMF_DARWIN_VARS.fd"
 DRIVE_COUNTER=0
 NETDEV_COUNTER=0
 BOOTINDEX_COUNTER=0
+MAC=${MAC:-""}
+if [ -n "${MAC}" ]; then
+  MAC=",mac=$MAC"
+fi
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -173,7 +177,7 @@ done
 for NETDEV_ID in "${NETDEVS_IDS[@]}"; do
   NETCARD_BOOTINDEX=$((BOOTINDEX_COUNTER++))
   NETCARDS_OPTIONS+=(
-    -device "e1000-82545em,netdev=$NETDEV_ID,bootindex=$NETCARD_BOOTINDEX"
+    -device "e1000-82545em${MAC},netdev=$NETDEV_ID,bootindex=$NETCARD_BOOTINDEX"
   )
 done
 
@@ -199,4 +203,5 @@ QEMU_ARGS=(
   -nodefaults
 )
 
+echo "QEMU cmd: \"$QEMU_X86_64\" \"${QEMU_ARGS[@]}\""
 "$QEMU_X86_64" "${QEMU_ARGS[@]}"

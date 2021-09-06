@@ -8,8 +8,8 @@ set -euo pipefail
 #  - vmnet-* netdevs
 #  uses GitHub mirror because of --filter=blob:none support
 
-QEMU_GIT="https://github.com/shchuko/qemu.git"
-QEMU_BRANCH="vmnet-v6.1.0-patches-v2"
+QEMU_GIT=${QEMU_GIT:-"https://github.com/shchuko/qemu.git"}
+QEMU_BRANCH=${QEMU_BRANCH:-"vmnet-v6.1.0-patches-v2"}
 
 QEMU_DIR="./qemu"
 QEMU_BINDIR="$QEMU_DIR/build"
