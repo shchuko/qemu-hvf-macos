@@ -98,15 +98,18 @@ Add as many devices as you need:
 
 ## Boot Order
 
-1. Installation media has the highest boot priority.
-
-2. Default drive has the highest boot priority after installation media.
-
+1. Default drive has the highest boot priority.
     * you can detach this drive by passing `-no-default-drive`:
 
       ```bash
       ./boot-macos.sh -no-default-drive
       ```
+    * you can force to boot from install media by passing `-installmedia-boot`:
+      ```bash
+      ./boot-macos.sh -install-macos Catalina -installmedia-boot 
+      ```
+2. Installation media has the highest boot priority after default drive.
+
 
 3. Other drives' boot order meets this script arguments pass order.
 

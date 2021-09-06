@@ -10,6 +10,7 @@ set -eo pipefail
 ##################
 INSTALL_OS_FLAG="False"
 INSTALL_IMAGE="./BaseSystem.cdr"
+BOOT_FROM_INSTALL_MEDIA="False"
 
 # Creating drive to install macOS onto
 # 50G is enough for Catalina
@@ -51,6 +52,7 @@ while [[ $# -gt 0 ]]; do
     echo -e "${SEP_1}-install-macos <OSNAME>${SEP_1}Create and attach OSNAME macOS install media for the first boot"
     echo -e "${SEP_1}-drive-qcow2 <FILE>${SEP_1}Attach qcow2 FILE as drive"
     echo -e "${SEP_1}-drive-raw <FILE>${SEP_1}Attach raw image FILE as drive"
+    echo -e "${SEP_1}-installmedia-boot${SEP_1}Boot from install media instead of default drive"
     echo -e "${SEP_1}-net-user${SEP_2}Attach user (slirp) netdev"
     echo -e "${SEP_1}-net-tap${SEP_2}Attach tap netdev"
     echo -e "${SEP_1}-vmnet-shared${SEP_2}Attach vmnet-shared netdev"
@@ -58,8 +60,8 @@ while [[ $# -gt 0 ]]; do
     echo -e "${SEP_1}-vmnet-bridged <IFNAME>${SEP_1}Attach vmnet-bridged netdev bridged onto IFNAME"
     echo
     echo -e "notes:"
-    echo -e "${SEP_1}* installation media has the highest boot priority"
-    echo -e "${SEP_1}* default drive has the highest boot priority after installation media"
+    echo -e "${SEP_1}* default drive has the highest boot priority (if '-installmedia-boot' not present)"
+    echo -e "${SEP_1}* installation media has the highest boot priority after default drive"
     echo -e "${SEP_1}* drives' boot order meets this script arguments pass order"
     echo -e "${SEP_1}* netdevs' boot order meets this script arguments pass order"
     echo -e "${SEP_1}* drives have higher boot priority than netdevs"
@@ -79,6 +81,10 @@ while [[ $# -gt 0 ]]; do
   -no-default-drive)
     DEFAULT_DRIVE_ATTACH_FLAG="False"
     DEFAULT_DRIVE_OPTIONS=()
+    ;;
+
+  -installmedia-boot)
+    BOOT_FROM_INSTALL_MEDIA="True"
     ;;
 
   -drive-qcow2)
@@ -178,13 +184,25 @@ if [[ "$INSTALL_OS_FLAG" == "True" ]]; then
   OS_INSTALL_MEDIA_OPTIONS+=("-drive-raw" "$INSTALL_IMAGE")
 fi
 
+######################
+## SETUP BOOT ORDER ##
+######################
+if [[ "$BOOT_FROM_INSTALL_MEDIA" == "True" ]]; then
+  OPTIONS+=(
+    "${OS_INSTALL_MEDIA_OPTIONS[@]}"
+    "${DEFAULT_DRIVE_OPTIONS[@]}"
+  )
+else
+
+  OPTIONS+=(
+    "${DEFAULT_DRIVE_OPTIONS[@]}"
+    "${OS_INSTALL_MEDIA_OPTIONS[@]}"
+  )
+fi
+
 #################
 ## RUN QEMU VM ##
 #################
-OPTIONS+=(
-  "${OS_INSTALL_MEDIA_OPTIONS[@]}"
-  "${DEFAULT_DRIVE_OPTIONS[@]}"
-  "${DYNAMIC_OPTIONS[@]}"
-)
+OPTIONS+=("${DYNAMIC_OPTIONS[@]}")
 
 ./qemu-system-wrapper.sh -qemu "$QEMU_SYSTEM_X86_64" -osk "$($READOSK)" "${OPTIONS[@]}"
