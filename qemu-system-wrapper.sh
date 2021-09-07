@@ -203,5 +203,5 @@ QEMU_ARGS=(
   -nodefaults
 )
 
-echo "QEMU cmd: \"$QEMU_X86_64\" \"${QEMU_ARGS[@]}\""
+echo "QEMU cmd: \"$QEMU_X86_64\" \"${QEMU_ARGS[*]}\""
 "$QEMU_X86_64" "${QEMU_ARGS[@]}"
