@@ -177,6 +177,11 @@ while [[ $# -gt 0 ]]; do
   shift
 done
 
+if [[ -n "$MACADDR_OPTION" && "${#NETDEVS_IDS[@]}" -gt 1 ]]; then
+  echo "Warn: MACADDR specified, but more than one netdev created. MACADDR is set only for the first netdev"
+  # TODO: support mac address setting using base address and mask
+fi
+
 for NETDEV_ID in "${NETDEVS_IDS[@]}"; do
   NETCARD_BOOTINDEX=$((BOOTINDEX_COUNTER++))
   NETCARDS_OPTIONS+=(
