@@ -6,7 +6,7 @@
 ## SET ENV VARS ##
 ##################
 QEMU_X86_64="qemu-system-x86_64"
-RAM=4096M
+RAM=${RAM:-4096M}
 SMP=${SMP:-2}
 OSK=""
 
