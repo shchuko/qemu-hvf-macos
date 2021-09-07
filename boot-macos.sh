@@ -14,7 +14,7 @@ BOOT_FROM_INSTALL_MEDIA="False"
 
 # Creating drive to install macOS onto
 # 50G is enough for Catalina
-DEFAULT_DRIVE_IMG="./drive.qcow2"
+DEFAULT_DRIVE_IMG=${DRIVE_IMG:-"./drive.qcow2"}
 DEFAULT_DRIVE_IMG_SIZE="50G"
 DEFAULT_DRIVE_ATTACH_FLAG="True"
 

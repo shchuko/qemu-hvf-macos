@@ -6,8 +6,9 @@
 ## SET ENV VARS ##
 ##################
 QEMU_X86_64="qemu-system-x86_64"
-RAM=4096M
-SMP=2
+RAM=${RAM:-4096M}
+SMP=${SMP:-2}
+MACADDR=${MACADDR:-""}
 OSK=""
 
 DRIVES_OPTIONS=()
@@ -23,6 +24,12 @@ FIRMWARE_VARS="$FIRMWARE_DIR/OVMF_DARWIN_VARS.fd"
 DRIVE_COUNTER=0
 NETDEV_COUNTER=0
 BOOTINDEX_COUNTER=0
+
+if [[ -n "$MACADDR" ]]; then
+  MACADDR_OPTION=",mac=$MACADDR"
+else
+  MACADDR_OPTION=""
+fi
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -173,8 +180,10 @@ done
 for NETDEV_ID in "${NETDEVS_IDS[@]}"; do
   NETCARD_BOOTINDEX=$((BOOTINDEX_COUNTER++))
   NETCARDS_OPTIONS+=(
-    -device "e1000-82545em,netdev=$NETDEV_ID,bootindex=$NETCARD_BOOTINDEX"
+    -device "e1000-82545em${MACADDR_OPTION},netdev=$NETDEV_ID,bootindex=$NETCARD_BOOTINDEX"
   )
+  # Clear the mac address for other netdevs to prevent a collision
+  MACADDR_OPTION=""
 done
 
 QEMU_ARGS=(
@@ -199,4 +208,5 @@ QEMU_ARGS=(
   -nodefaults
 )
 
+echo "QEMU cmd: \"$QEMU_X86_64\" \"${QEMU_ARGS[*]}\""
 "$QEMU_X86_64" "${QEMU_ARGS[@]}"
