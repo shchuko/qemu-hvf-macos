@@ -8,6 +8,7 @@
 QEMU_X86_64="qemu-system-x86_64"
 RAM=${RAM:-4096M}
 SMP=${SMP:-2}
+MACADDR=${MACADDR:-""}
 OSK=""
 
 DRIVES_OPTIONS=()
@@ -23,9 +24,11 @@ FIRMWARE_VARS="$FIRMWARE_DIR/OVMF_DARWIN_VARS.fd"
 DRIVE_COUNTER=0
 NETDEV_COUNTER=0
 BOOTINDEX_COUNTER=0
-MAC=${MAC:-""}
-if [ -n "${MAC}" ]; then
-  MAC=",mac=$MAC"
+
+if [[ -n "$MACADDR" ]]; then
+  MACADDR_OPTION=",mac=$MACADDR"
+else
+  MACADDR_OPTION=""
 fi
 
 while [[ $# -gt 0 ]]; do
@@ -177,8 +180,10 @@ done
 for NETDEV_ID in "${NETDEVS_IDS[@]}"; do
   NETCARD_BOOTINDEX=$((BOOTINDEX_COUNTER++))
   NETCARDS_OPTIONS+=(
-    -device "e1000-82545em${MAC},netdev=$NETDEV_ID,bootindex=$NETCARD_BOOTINDEX"
+    -device "e1000-82545em${MACADDR_OPTION},netdev=$NETDEV_ID,bootindex=$NETCARD_BOOTINDEX"
   )
+  # Clear the mac address for other netdevs to prevent a collision
+  MACADDR_OPTION=""
 done
 
 QEMU_ARGS=(
