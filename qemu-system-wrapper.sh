@@ -25,12 +25,6 @@ DRIVE_COUNTER=0
 NETDEV_COUNTER=0
 BOOTINDEX_COUNTER=0
 
-if [[ -n "$MACADDR" ]]; then
-  MACADDR_OPTION=",mac=$MACADDR"
-else
-  MACADDR_OPTION=""
-fi
-
 while [[ $# -gt 0 ]]; do
   case "$1" in
 
@@ -177,18 +171,34 @@ while [[ $# -gt 0 ]]; do
   shift
 done
 
-if [[ -n "$MACADDR_OPTION" && "${#NETDEVS_IDS[@]}" -gt 1 ]]; then
-  echo "Warn: MACADDR specified, but more than one netdev created. MACADDR is set only for the first netdev"
-  # TODO: support mac address setting using base address and mask
-fi
+function nextMacAddr() {
+  MAC="$1"
+  MAC_HEX=$(echo "$MAC" | awk '{
+    gsub(/:/, "");
+    print toupper($0);
+  }')
+
+  NEXT_HEX=$(echo "obase=ibase=16;$MAC_HEX+1" | bc)
+  NEXT_MAC=$(echo "$NEXT_HEX" | awk '{
+    $0=sprintf("%012s", $0);
+    gsub(/.{2}/,"&:");
+    print substr($0, 0, 17);
+  }')
+  echo "$NEXT_MAC"
+}
 
 for NETDEV_ID in "${NETDEVS_IDS[@]}"; do
+  if [[ -n "$MACADDR" ]]; then
+    MACADDR_OPTION=",mac=$MACADDR"
+    MACADDR=$(nextMacAddr "$MACADDR")
+  else
+    MACADDR_OPTION=""
+  fi
+
   NETCARD_BOOTINDEX=$((BOOTINDEX_COUNTER++))
   NETCARDS_OPTIONS+=(
     -device "e1000-82545em${MACADDR_OPTION},netdev=$NETDEV_ID,bootindex=$NETCARD_BOOTINDEX"
   )
-  # Clear the mac address for other netdevs to prevent a collision
-  MACADDR_OPTION=""
 done
 
 QEMU_ARGS=(
