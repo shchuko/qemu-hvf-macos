@@ -73,7 +73,7 @@ Now you can attach QCOW2 and raw disk images:
 
 ```bash
 ./boot-macos.sh -drive-qcow2 /path/to/some/image.qcow2
-./boot-macos.sh -drive-qcow2 /path/to/some/image.raw
+./boot-macos.sh -drive-raw /path/to/some/image.raw
 ```
 
 And network devices:
