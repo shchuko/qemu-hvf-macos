@@ -49,7 +49,7 @@ The simplest way to install macOS is:
 # ... to attach installation media
 # The drive to install system onto will be created and attached to VM
 # Erase it, create APFS using Disk Utility and start OS installation
-# After the reboot detach install media and finish installation:
+# After the reboot and installation finish detach the install media:
 ./boot-macos.sh
 ```
 
@@ -92,7 +92,7 @@ Add as many devices as you need:
 ./boot-macos.sh -net-user \
   -drive-qcow2 /path/to/some/image.qcow2 \
   -net-tap \
-  -drive-qcow2 /path/to/some/image.raw \
+  -drive-raw /path/to/some/image.raw \
   -vmnet-shared 
 ```
 
