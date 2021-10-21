@@ -9,7 +9,7 @@ EXEC_PWD="$PWD"
 GLIB_REMOTE="https://gitlab.gnome.org/GNOME/glib.git"
 GLIB_VERSION="2.58.3" # Equal to git branch
 GLIB_SRC_DIR="$PWD/glib"
-GLIB_DESTDIR=${GLIB_DESTDIR:-"$PWD/glib-destdir"}
+GLIB_DESTDIR=${DESTDIR:-"$PWD/destdir"}
 
 if [[ ! -d "$GLIB_SRC_DIR" ]]; then
   git clone --filter=blob:none --single-branch \

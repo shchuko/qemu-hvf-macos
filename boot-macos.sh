@@ -19,9 +19,9 @@ DEFAULT_DRIVE_IMG_SIZE="50G"
 DEFAULT_DRIVE_ATTACH_FLAG="True"
 
 # Executables
-QEMU_SYSTEM_X86_64="./qemu/build/qemu-system-x86_64"
-QEMU_IMG="./qemu/build/qemu-img"
-READOSK="./readosk/readosk"
+QEMU_SYSTEM_X86_64="qemu-system-x86_64"
+QEMU_IMG="qemu-img"
+READOSK="readosk"
 
 # Attach only main drive by default
 OPTIONS=()
@@ -65,6 +65,7 @@ while [[ $# -gt 0 ]]; do
     echo -e "${SEP_1}* drives' boot order meets this script arguments pass order"
     echo -e "${SEP_1}* netdevs' boot order meets this script arguments pass order"
     echo -e "${SEP_1}* drives have higher boot priority than netdevs"
+    echo -e "${SEP_1}* this script requires 'source.sh' created by 'prepare-*.sh'"
     exit 0
     ;;
   -install-macos)
@@ -156,21 +157,15 @@ while [[ $# -gt 0 ]]; do
   shift
 done
 
-########################
-## BUILD DEPENDENCIES ##
-########################
+##################
+## UPDATE $PATH ##
+##################
+if [[ ! -f "source.sh" ]]; then
+  echo "Error: source.sh not found"
+  exit 1
+fi
 
-# Build GLib
-./glib-build.sh
-
-# QEMU download and build
-./qemu-build.sh
-
-# 'readosk' tool build
-./readosk-build.sh
-
-# QEMU Firmware download
-./get-firmware.sh
+source source.sh
 
 #########################
 ## CREATE DRIVE IMAGES ##

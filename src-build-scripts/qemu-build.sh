@@ -9,13 +9,13 @@ set -euo pipefail
 #  uses GitHub mirror because of --filter=blob:none support
 
 QEMU_GIT=${QEMU_GIT:-"https://github.com/shchuko/qemu.git"}
-QEMU_BRANCH=${QEMU_BRANCH:-"vmnet-v6.1.0-patches-v2"}
+QEMU_BRANCH=${QEMU_BRANCH:-"vmnet-v6.1.0-patches-v3"}
+QEMU_DIR="$PWD/qemu"
 
-QEMU_DIR="./qemu"
-QEMU_BINDIR="$QEMU_DIR/build"
-QEMU_SYSTEM_X86_64="$QEMU_BINDIR/qemu-system-x86_64"
-QEMU_IMG="$QEMU_BINDIR/qemu-img"
-GLIB_DESTDIR=${GLIB_DESTDIR:-"$PWD/glib-destdir"}
+QEMU_DESTDIR=${DESTDIR:-"$PWD/destdir"}
+QEMU_SYSTEM_X86_64="$QEMU_DESTDIR/bin/qemu-system-x86_64"
+QEMU_IMG="$QEMU_DESTDIR/bin/qemu-img"
+GLIB_DESTDIR=${DESTDIR:-"$PWD/destdir"}
 CUSTOM_PKG_CONFIG_PATH="$GLIB_DESTDIR/lib/pkgconfig"
 PKG_CONFIG_PATH=${PKG_CONFIG_PATH:-""}
 
@@ -43,6 +43,7 @@ if [[ ! -d "$QEMU_DIR" ]]; then
 fi
 
 cd "$QEMU_DIR"
-PKG_CONFIG_PATH="$CUSTOM_PKG_CONFIG_PATH:$PKG_CONFIG_PATH" ./configure --target-list=x86_64-softmmu
-make
+PKG_CONFIG_PATH="$CUSTOM_PKG_CONFIG_PATH:$PKG_CONFIG_PATH" ./configure \
+  --target-list=x86_64-softmmu --prefix="$QEMU_DESTDIR"
+make install
 cd -

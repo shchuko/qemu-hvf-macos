@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -e
 # QEMU/HVF macOS boot script example
 
 ##################
@@ -16,10 +16,6 @@ NETDEVS_OPTIONS=()
 NETCARDS_OPTIONS=()
 
 NETDEVS_IDS=()
-
-FIRMWARE_DIR="Firmware"
-FIRMWARE_CODE="$FIRMWARE_DIR/OVMF_DARWIN_CODE.fd"
-FIRMWARE_VARS="$FIRMWARE_DIR/OVMF_DARWIN_VARS.fd"
 
 DRIVE_COUNTER=0
 NETDEV_COUNTER=0
@@ -50,7 +46,7 @@ while [[ $# -gt 0 ]]; do
     echo -e "notes:"
     echo -e "${SEP_1}* drives' boot order meets this script arguments pass order"
     echo -e "${SEP_1}* netdevs' boot order meets this script arguments pass order"
-    echo -e "${SEP_1}* drives have higher boot priority than netdevs"
+    echo -e "${SEP_1}* this script requires 'source.sh' created by 'prepare-*.sh'"
     exit 0
     ;;
 
@@ -201,6 +197,29 @@ for NETDEV_ID in "${NETDEVS_IDS[@]}"; do
   )
 done
 
+# Create UEFI from templates
+if [[ ! -f "source.sh" ]]; then
+  echo "Error: source.sh not found"
+  exit 1
+fi
+
+source source.sh
+
+FIRMWARE_TEMPLATES_DIR="$LOOKUP_PREFIX/share/OVMF_DARWIN"
+FIRMWARE_DIR="$PWD/Firmware"
+FIRMWARE_CODE="OVMF_DARWIN_CODE.fd"
+FIRMWARE_VARS="OVMF_DARWIN_VARS.fd"
+
+mkdir -p "$FIRMWARE_DIR"
+if [[ ! -f "$FIRMWARE_DIR/$FIRMWARE_CODE" ]]; then
+  install -m0444 "$FIRMWARE_TEMPLATES_DIR/$FIRMWARE_CODE" "$FIRMWARE_DIR/"
+
+fi
+
+if [[ ! -f "$FIRMWARE_DIR/$FIRMWARE_VARS" ]]; then
+  install -m0666 "$FIRMWARE_TEMPLATES_DIR/$FIRMWARE_VARS" "$FIRMWARE_DIR/"
+fi
+
 QEMU_ARGS=(
   # Using host CPU may produce kernel panics, switch to Penryn if needed
   #-cpu "Penryn,vmware-cpuid-freq=on"
@@ -210,8 +229,8 @@ QEMU_ARGS=(
   -smp "$SMP"
   -accel "hvf"
   -smbios "type=2"
-  -drive "if=pflash,format=raw,readonly=on,file=$FIRMWARE_CODE"
-  -drive "if=pflash,format=raw,readonly=on,file=$FIRMWARE_VARS"
+  -drive "if=pflash,format=raw,readonly=on,file=$FIRMWARE_DIR/$FIRMWARE_CODE"
+  -drive "if=pflash,format=raw,readonly=off,file=$FIRMWARE_DIR/$FIRMWARE_VARS"
   -usb
   -device "usb-kbd"
   -device "usb-tablet"

@@ -1,15 +1,19 @@
 # macOS over QEMU/HVF howto
 
-Examples of running macOS over QEMU on Intel-based Mac hosts with Hypervisor.Framework acceleration (`-accel hvf`)
+Examples of running macOS over QEMU on Intel-based Mac hosts with Hypervisor.Framework
+acceleration (`-accel hvf`)
 
 ## A couple of required things
 
-- [Patched QEMU](https://github.com/shchuko/qemu/tree/v5.2.0/darwin-support) (patches are merged into qemu master, but
-  not released)
+- [Patched QEMU](https://github.com/shchuko/qemu/tree/vmnet-v6.1.0-patches-v3)
 
 - [Patched UEFI](https://github.com/shchuko/OvmfDarwinPkg)
 
-- [OSK Key retrieval tool](readosk) - required for AppleSMC emulation
+- [GLib v2.58.3](https://gitlab.gnome.org/GNOME/glib/-/tree/2.58.3) - required only for
+  tap-networking. It's fine to use the recent version if tap networking is not needed. Issue can be
+  found [here](https://gitlab.com/qemu-project/qemu/-/issues/335).
+
+- [OSK Key retrieval tool](https://github.com/shchuko/readosk) - required for AppleSMC emulation
 
 - macOS installation app (ex.`/Applications/Install macOS Catalina.app`)
 
@@ -17,29 +21,24 @@ Examples of running macOS over QEMU on Intel-based Mac hosts with Hypervisor.Fra
 
 - [QEMU build requirements](https://wiki.qemu.org/Hosts/Mac)
 
-## Repo content
-
-- [boot-macos.sh](boot-macos.sh) - macOS installation & run script. Invokes tools below in correct order.
-  Run `./boot-macos.sh -help` for more information
-
-- [readosk](readosk) - OSK Key retrieval tool sources
-
-- [readosk-build.sh](readosk-build.sh) - readosk build script
-
-- [qemu-build.sh](qemu-build.sh) - QEMU clone & build script
-
-- [glib-build.sh](glib-build.sh) - GLib clone & build script
-
-- [get-firmware.sh](get-firmware.sh) - Patched UEFI download & unpack script
-
-- [create-install-img.sh](create-install-img.sh) - Install disk image creation script. Requires sudo privileges!
-
-- [qemu-system-wrapper.sh](qemu-system-wrapper.sh) - VM boot script. Run `./qemu-system-wrapper.sh -help` for more
-  information
-
-- [bridge-utils/*](bridge-utils) - simple wrappers for `ifconfig` to operate with network bridges
-
 ## Installation HOWTO
+
+### Part 1: Prepare the environment
+
+There are two ways we can install all the tools and dependencies
+
+1. Install from brew [shchuko/qemu-macguest](https://github.com/shchuko/homebrew-qemu-macguest)
+   tap (*Note: glib v2.58.3 won't be installed this way, tap networking won't work*)
+    ```bash
+    ./prepare-brew.sh
+    ```
+
+2. Build manually from sources
+    ```bash
+    ./prepare-src.sh
+    ```
+
+### Part 2: Start the vm
 
 The simplest way to install macOS is:
 
@@ -53,7 +52,8 @@ The simplest way to install macOS is:
 ./boot-macos.sh
 ```
 
-Replace 'Catalina' with required OS name to choose the app you wanted, ex: `/Applications/Install macOS Catalina.app`.
+Replace 'Catalina' with required OS name to choose the app you wanted,
+ex: `/Applications/Install macOS Catalina.app`.
 
 > The script will clone and build QEMU with its GLib dependency,
 > retrieve UEFI binaries, create installation media *BaseSystem.cdr*, build `readosk` tool, retrieve OSK key,
@@ -121,8 +121,8 @@ Add as many devices as you need:
 
 ### Tap networking
 
-Requires Tun/Tap kernel extension: `brew install tuntap`. Also, you should run qemu with sudo. Most likely, your
-preparation steps should be:
+Requires Tun/Tap kernel extension: `brew install tuntap`. Also, you should run qemu with sudo. Most
+likely, your preparation steps should be:
 
 ```bash
 sudo ./bridge-utils/br-create.sh bridge0
@@ -140,13 +140,34 @@ sudo ./bridge-utils/br-destroy.sh bridge0
 sudo ./bridge-utils/br-destroy.sh
 ```
 
-Modify [br-add-member.sh](bridge-utils/br-add-member.sh)/[br-rm-member.sh](bridge-utils/br-rm-member.sh) if needed. By
-default QEMU-grabbed tapX will be added to the `bridge0`.
+Modify [br-add-member.sh](bridge-utils/br-add-member.sh)
+/[br-rm-member.sh](bridge-utils/br-rm-member.sh) if needed. By default QEMU-grabbed tapX will be
+added to the `bridge0`.
 
-**Note:** building QEMU with brew-provided **glib v2.66.7 corrupts tun/tap networking**, the problem is needed to be
-investigated. Luckily, everything works fine with glib v2.58.3.
+**Note:** building QEMU with brew-provided **glib v2.66.7 corrupts tun/tap networking**, the problem
+is needed to be investigated. Luckily, everything works fine with glib v2.58.3.
 
 ### vmnet.Framework networking
 
 1. Requires sudo
-2. This networking type is unstable not and not recommended to use.  
+2. This networking type is unstable.
+
+## Repo content
+
+- [boot-macos.sh](boot-macos.sh) - macOS installation & run script. Run `./boot-macos.sh -help` for
+  more information
+
+- [src-build-scripts/*](src-build-scripts) - scripts to download and build tools from sources
+
+- [create-install-img.sh](create-install-img.sh) - Install disk image creation script. Requires sudo
+  privileges!
+
+- [qemu-system-wrapper.sh](qemu-system-wrapper.sh) - Wrapper for qemu-system-x86_64.
+  Run `./qemu-system-wrapper.sh -help` for more information
+
+- [bridge-utils/*](bridge-utils) - simple wrappers for `ifconfig` to operate with network bridges
+
+- [prepare-brew.sh](prepare-brew.sh) - script to install dependencies with brew
+  from [shchuko/qemu-macguest](https://github.com/shchuko/homebrew-qemu-macguest) tap
+
+- [prepare-src.sh](prepare-src.sh) - script build dependencies manually 
