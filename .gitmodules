@@ -1,0 +1,3 @@
+[submodule "readosk"]
+	path = readosk
+	url = https://github.com/shchuko/readosk.git
