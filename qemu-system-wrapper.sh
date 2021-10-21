@@ -9,7 +9,6 @@ QEMU_X86_64="qemu-system-x86_64"
 RAM=${RAM:-4096M}
 SMP=${SMP:-2}
 MACADDR=${MACADDR:-""}
-OSK=""
 
 DRIVES_OPTIONS=()
 NETDEVS_OPTIONS=()
@@ -34,7 +33,6 @@ while [[ $# -gt 0 ]]; do
     echo -e "options:"
     echo -e "${SEP_1}-help${SEP_2}${SEP_1}Print this help"
     echo -e "${SEP_1}-qemu <PATH>${SEP_2}Path to qemu-system-x86_64. Default is 'qemu-system-x86_64'"
-    echo -e "${SEP_1}-osk <OSK>${SEP_2}OSK key for 'isa-applesmc' device. Default is an empty string"
     echo -e "${SEP_1}-drive-qcow2 <FILE>${SEP_1}Attach qcow2 FILE as drive"
     echo -e "${SEP_1}-drive-raw <FILE>${SEP_1}Attach raw image FILE as drive"
     echo -e "${SEP_1}-net-tap <UP> <DOWN>${SEP_1}Attach tap netdev with UP and DOWN as tap-up and tap-down scripts"
@@ -56,16 +54,6 @@ while [[ $# -gt 0 ]]; do
       shift
     else
       echo "Wrong option -qemu: <PATH> is not provided"
-      exit 1
-    fi
-    ;;
-
-  -osk)
-    if [[ $# -gt 1 ]]; then
-      OSK="$2"
-      shift
-    else
-      echo "Wrong option -osk: <OSK> is not provided"
       exit 1
     fi
     ;;
@@ -234,7 +222,7 @@ QEMU_ARGS=(
   -usb
   -device "usb-kbd"
   -device "usb-tablet"
-  -device "isa-applesmc,osk=$OSK"
+  -device "isa-applesmc,oskdirect=on"
   -vga "virtio"
   "${DRIVES_OPTIONS[@]}"
   "${NETDEVS_OPTIONS[@]}"

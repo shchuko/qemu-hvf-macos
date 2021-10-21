@@ -21,7 +21,6 @@ DEFAULT_DRIVE_ATTACH_FLAG="True"
 # Executables
 QEMU_SYSTEM_X86_64="qemu-system-x86_64"
 QEMU_IMG="qemu-img"
-READOSK="readosk"
 
 # Attach only main drive by default
 OPTIONS=()
@@ -200,4 +199,4 @@ fi
 #################
 OPTIONS+=("${DYNAMIC_OPTIONS[@]}")
 
-./qemu-system-wrapper.sh -qemu "$QEMU_SYSTEM_X86_64" -osk "$($READOSK)" "${OPTIONS[@]}"
+./qemu-system-wrapper.sh -qemu "$QEMU_SYSTEM_X86_64" "${OPTIONS[@]}"

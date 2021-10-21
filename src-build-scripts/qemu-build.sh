@@ -9,7 +9,7 @@ set -euo pipefail
 #  uses GitHub mirror because of --filter=blob:none support
 
 QEMU_GIT=${QEMU_GIT:-"https://github.com/shchuko/qemu.git"}
-QEMU_BRANCH=${QEMU_BRANCH:-"vmnet-v6.1.0-patches-v3"}
+QEMU_BRANCH=${QEMU_BRANCH:-"v6.1.0-vmnet-v3-oskdirect-v1"}
 QEMU_DIR="$PWD/qemu"
 
 QEMU_DESTDIR=${DESTDIR:-"$PWD/destdir"}

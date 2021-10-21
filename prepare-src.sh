@@ -5,7 +5,6 @@ DESTDIR="$PWD/src-build-scripts/destdir"
 cd src-build-scripts
 ./glib-build.sh
 ./qemu-build.sh
-./readosk-build.sh
 ./retrive-firmware.sh
 cd -
 
