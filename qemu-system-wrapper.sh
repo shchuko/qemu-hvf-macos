@@ -222,7 +222,7 @@ QEMU_ARGS=(
   -usb
   -device "usb-kbd"
   -device "usb-tablet"
-  -device "isa-applesmc,oskdirect=on"
+  -device "isa-applesmc,hostosk=on"
   -vga "virtio"
   "${DRIVES_OPTIONS[@]}"
   "${NETDEVS_OPTIONS[@]}"
