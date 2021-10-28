@@ -1,0 +1,82 @@
+{
+  "return": {
+    "version": "1.3-AppleVirtIO-16.140.6~13 (JazzSecAzul tools)",
+    "supported_commands": [
+      {
+        "enabled": true,
+        "name": "guest-exec",
+        "success-response": true
+      },
+      {
+        "enabled": true,
+        "name": "guest-exec-status",
+        "success-response": true
+      },
+      {
+        "enabled": true,
+        "name": "guest-info",
+        "success-response": true
+      },
+      {
+        "enabled": true,
+        "name": "guest-sync",
+        "success-response": true
+      },
+      {
+        "enabled": true,
+        "name": "guest-sync-delimited",
+        "success-response": true
+      },
+      {
+        "enabled": true,
+        "name": "guest-ping",
+        "success-response": true
+      },
+      {
+        "enabled": true,
+        "name": "guest-file-open",
+        "success-response": true
+      },
+      {
+        "enabled": true,
+        "name": "guest-file-close",
+        "success-response": true
+      },
+      {
+        "enabled": true,
+        "name": "guest-file-read",
+        "success-response": true
+      },
+      {
+        "enabled": true,
+        "name": "guest-file-write",
+        "success-response": true
+      },
+      {
+        "enabled": true,
+        "name": "guest-file-seek",
+        "success-response": true
+      },
+      {
+        "enabled": true,
+        "name": "guest-file-flush",
+        "success-response": true
+      },
+      {
+        "enabled": true,
+        "name": "guest-network-get-interfaces",
+        "success-response": true
+      },
+      {
+        "enabled": true,
+        "name": "guest-shutdown",
+        "success-response": true
+      },
+      {
+        "enabled": true,
+        "name": "apple-guest-set-remote-login",
+        "success-response": true
+      }
+    ]
+  }
+}
