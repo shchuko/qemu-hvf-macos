@@ -22,12 +22,14 @@ RESULT_PATH="$OUTPUT_DIR/catalina.xml"
 TEMPLATE_PATH="templates/catalina-template.xml"
 UEFI_CODE="$PREFIX/share/OVMF_DARWIN/OVMF_DARWIN_CODE.fd"
 UEFI_VARS_TEMPLATE="$PREFIX/share/OVMF_DARWIN/OVMF_DARWIN_VARS.fd"
+EMULATOR="$(which qemu-system-x86_64)"
 
 sed "s#%NAME%#$NAME#g" "$TEMPLATE_PATH" |
   sed "s#%UUID%#$UUID#g" |
   sed "s#%UEFI_CODE%#$UEFI_CODE#g" |
   sed "s#%UEFI_VARS_TEMPLATE%#$UEFI_VARS_TEMPLATE#g" |
   sed "s#%UEFI_VARS%#$UEFI_VARS_PATH#g" |
+  sed "s#%EMULATOR%#$EMULATOR#g" |
   sed "s#%VNC_PORT%#$VNC_PORT#g" |
   sed "s#%VNC_PASSWD%#$VNC_PASSWD#g" |
   sed "s#%DRIVE_FMT%#$DRIVE_FMT#g" |

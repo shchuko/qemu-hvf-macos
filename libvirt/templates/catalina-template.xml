@@ -28,6 +28,8 @@
   <on_reboot>restart</on_reboot>
   <on_crash>restart</on_crash>
   <devices>
+    <emulator>%EMULATOR%</emulator>
+
     <!--    VNC Graphics     -->
     <graphics type='vnc' port="%VNC_PORT%" passwd="%VNC_PASSWD%">
     </graphics>
