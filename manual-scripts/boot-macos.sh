@@ -174,7 +174,7 @@ if [[ ! -f "$DEFAULT_DRIVE_IMG" && "$DEFAULT_DRIVE_ATTACH_FLAG" == "True" ]]; th
 fi
 
 if [[ "$INSTALL_OS_FLAG" == "True" ]]; then
-  DESTDIR="." OS_NAME="$OS" ./create-install-img.sh
+  DESTDIR="." OS_NAME="$OS" ../create-install-img.sh
   OS_INSTALL_MEDIA_OPTIONS+=("-drive-raw" "$INSTALL_IMAGE")
 fi
 
