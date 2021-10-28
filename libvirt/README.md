@@ -19,8 +19,9 @@ Now tested with `macOS 10.15.7 Catalina`
 ## VM Management
 
 Start the VM: `sudo virsh start Catalina`
-Shutdown the VM: `sudo virsh shutdown Catalina`
-Shutdown the VM using AppleQEMUGuestAgent: `sudo virsh shutdown --mode agent Catalina`
+Shutdown the VM using [AppleQEMUGuestAgent](../AppleQEMUGuestAgent) (
+preferred): `sudo virsh shutdown --mode agent Catalina`
+Shutdown the VM (sometimes does not work, not investigated): `sudo virsh shutdown Catalina`
 Destroy the VM: `sudo virsh destroy Catalina`
 Describe network interfaces: `sudo virsh domifaddr --source agent Catalina`
 
