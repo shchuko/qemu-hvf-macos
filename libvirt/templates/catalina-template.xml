@@ -1,0 +1,103 @@
+<domain type='qemu' xmlns:qemu='http://libvirt.org/schemas/domain/qemu/1.0'>
+  <name>%NAME%</name>
+  <uuid>%UUID%</uuid>
+
+  <memory unit='GB'>4</memory>
+  <vcpu>2</vcpu>
+  <features>
+    <acpi/>
+    <apic/>
+  </features>
+
+  <os>
+    <type arch='x86_64' machine='q35'>hvm</type>
+    <loader readonly='yes' type='pflash'>%UEFI_CODE%</loader>
+    <nvram template='%UEFI_VARS_TEMPLATE%'>%UEFI_VARS%</nvram>
+    <smbios mode='sysinfo'/>
+  </os>
+
+  <!--    Allocate SMBIOS Type 2     -->
+  <sysinfo type='smbios'>
+    <baseBoard>
+      <entry name='manufacturer'>QEMU</entry>
+    </baseBoard>
+  </sysinfo>
+
+  <clock offset='localtime'/>
+  <on_poweroff>destroy</on_poweroff>
+  <on_reboot>restart</on_reboot>
+  <on_crash>restart</on_crash>
+  <devices>
+    <!--    VNC Graphics     -->
+    <graphics type='vnc' port="%VNC_PORT%" passwd="%VNC_PASSWD%">
+    </graphics>
+    <video>
+      <model type="virtio" vram="65536" heads="1" primary="yes"/>
+      <address type='pci' domain='0x0000' bus='0x00' slot='0x01' function='0x0'/>
+    </video>
+
+    <!--    Block devices     -->
+    <disk type='file' device='disk'>
+      <driver name='qemu' type='%DRIVE_FMT%'/>
+      <source file='%DRIVE_PATH%'/>
+      <target dev='vda' bus='virtio'/>
+      <boot order='1'/>
+      <address type='pci' domain='0x0000' bus='0x00' slot='0x02' function='0x0'/>
+    </disk>
+
+    <!--    QEMU Guest-Agent support     -->
+    <controller type='virtio-serial' index='0'>
+      <address type='pci' domain='0x0000' bus='0x00' slot='0x10' function='0x0'/>
+    </controller>
+    <channel type='unix'>
+      <target type='virtio' name='org.qemu.guest_agent.0'/>
+      <address type='virtio-serial' controller='0' bus='0' port='1'/>
+    </channel>
+
+    <!--    Keyboard and mouse support     -->
+    <controller type='usb' index='0' model='ich9-ehci1'>
+      <address type='pci' domain='0x0000' bus='0x00' slot='0x1d' function='0x7'/>
+    </controller>
+    <controller type='usb' index='0' model='ich9-uhci1'>
+      <master startport='0'/>
+      <address type='pci' domain='0x0000' bus='0x00' slot='0x1d' function='0x0' multifunction='on'/>
+    </controller>
+    <controller type='usb' index='0' model='ich9-uhci2'>
+      <master startport='2'/>
+      <address type='pci' domain='0x0000' bus='0x00' slot='0x1d' function='0x1'/>
+    </controller>
+    <controller type='usb' index='0' model='ich9-uhci3'>
+      <master startport='4'/>
+      <address type='pci' domain='0x0000' bus='0x00' slot='0x1d' function='0x2'/>
+    </controller>
+
+    <input type='keyboard' bus='usb'/>
+    <input type='tablet' bus='usb'/>
+
+    <seclabel type='none'/>
+    <memballoon model='none'/>
+  </devices>
+
+  <qemu:commandline>
+    <!--    Override '-cpu' with 'host' value and add required options    -->
+    <!--    https://lists.gnu.org/archive/html/qemu-devel/2017-01/msg04344.html    -->
+    <!--    https://patchew.org/QEMU/20210122150518.3551-1-yaroshchuk2000@gmail.com/    -->
+    <qemu:arg value='-cpu'/>
+    <qemu:arg value='host,vmware-cpuid-freq=on'/>
+
+    <!--    Enable Hypervisor.Framework acceleration overriding '-machine' option    -->
+    <qemu:arg value='-machine'/>
+    <qemu:arg
+      value='type=q35,accel=hvf,usb=off,dump-guest-core=off,pflash0=libvirt-pflash0-format,pflash1=libvirt-pflash1-format,memory-backend=pc.ram'/>
+
+    <qemu:arg value='-device'/>
+    <qemu:arg value='isa-applesmc,hostosk=on'/>
+
+    <!--    Enable networking via vmnet.framework    -->
+    <qemu:arg value='-netdev'/>
+    <qemu:arg value='vmnet-shared,id=vmnet0'/>
+    <qemu:arg value='-device'/>
+    <qemu:arg value='virtio-net-pci,netdev=vmnet0,bus=pcie.0,addr=0x1e'/>
+    <!--    <qemu:arg value='e1000-82545em,netdev=vmnet0,bus=pcie.0,addr=0x1e'/>-->
+  </qemu:commandline>
+</domain>

@@ -1,0 +1,8 @@
+<disk type='file' device='disk'>
+  <driver name='qemu' type='%INSTALLMEDIA_FORMAT%'/>
+  <source file='%INSTALLMEDIA_PATH%'/>
+  <target dev='vdb' bus='virtio'/>
+  <readonly/>
+  <boot order='2'/>
+  <address type='pci' domain='0x0000' bus='0x00' slot='0x3' function='0'/>
+</disk>
