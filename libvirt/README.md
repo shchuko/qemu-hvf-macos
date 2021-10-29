@@ -39,3 +39,7 @@ Now tested with `macOS 10.15.7 Catalina`
 
   `sudo virsh domifaddr --source agent Catalina`
 
+## Notes
+
+For some reason networking via `virtio-net-pci` does not work properly with Catalina guest.
+`e1000-82545em` used instead.
