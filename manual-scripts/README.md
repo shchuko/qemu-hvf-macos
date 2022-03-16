@@ -1,16 +1,16 @@
 ## Manual VM setup scripts (aka `qemu-system-x86_64` wrappers)
 
-Bash way to create and setup macOS VM 
+Bash way to create and setup macOS VM
 
 ## A couple of required things
 
-- [Patched QEMU](https://github.com/shchuko/qemu/tree/vmnet-v6.1.0-patches-v3)
+- [Patched QEMU](https://github.com/shchuko/qemu/tree/v6.2.0-vmnet-v20-hostosk-v8)
 
 - [Patched UEFI](https://github.com/shchuko/OvmfDarwinPkg)
 
 - [GLib v2.58.3](https://gitlab.gnome.org/GNOME/glib/-/tree/2.58.3) - required only for
-  tap-networking. It's fine to use the recent version if tap networking is not needed. Issue can be
-  found [here](https://gitlab.com/qemu-project/qemu/-/issues/335).
+  tap-networking. It's fine to use the recent version if tap networking is not needed. Related
+  issue can be found [here](https://gitlab.com/qemu-project/qemu/-/issues/335).
 
 - macOS's installation app (ex.`/Applications/Install macOS Catalina.app`)
 
@@ -29,11 +29,13 @@ There are two ways we can install all the tools and dependencies
     ```bash
     ./prepare-brew.sh
     ```
+   This installs tools into HOMEBREW_PREFIX as usual place for Homebrew.
 
 2. Build manually from sources
     ```bash
     ./prepare-src.sh
     ```
+   This installs tools into manual-scripts/src-build-scripts/destdir (relatively to repo root).
 
 ### Part 2: Start the vm
 
@@ -53,10 +55,10 @@ Replace 'Catalina' with required OS name to choose the app you wanted,
 ex: `/Applications/Install macOS Catalina.app`.
 
 > The script will clone and build QEMU with its GLib dependency,
-> retrieve UEFI binaries, create installation media *BaseSystem.cdr*, build `readosk` tool, retrieve OSK key,
+> retrieve UEFI binaries, create installation media *BaseSystem.cdr*,
 > create a drive to install macOS onto, and finally start QEMU VM. Notice that
-> [create-install-img.sh](../create-install-img.sh) being a part of [boot-macos.sh](boot-macos.sh) requires sudo
-> privileges!
+> [../create-install-img.sh](../create-install-img.sh) being a part of
+> [boot-macos.sh](boot-macos.sh) requires sudo privileges!
 
 After everything is done, to boot your guest macOS just run:
 
@@ -77,10 +79,10 @@ And network devices:
 
 ```bash
 ./boot-macos.sh -net-user # User (slirp) networking
-./boot-macos.sh -net-tap # Tap networking
-./boot-macos.sh -vmnet-shared # vmnet.Framework networking in shared mode (experimental)
-./boot-macos.sh -vmnet-host # vmnet.Framework networking in host mode (experimental)
-./boot-macos.sh -vmnet-bridged enX # vmnet.Framework networking in bridged mode, bridged onto enX (experimental)
+./boot-macos.sh -net-tap # Tap networking - works only with glib 2.58.3 dependency!
+./boot-macos.sh -vmnet-shared # vmnet.Framework networking in shared mode (experimental). Requires sudo!
+./boot-macos.sh -vmnet-host # vmnet.Framework networking in host mode (experimental). Requires sudo!
+./boot-macos.sh -vmnet-bridged enX # vmnet.Framework networking in bridged mode, bridged onto enX (experimental). Requires sudo!
 ```
 
 Add as many devices as you need:
@@ -105,8 +107,7 @@ Add as many devices as you need:
       ```bash
       ./boot-macos.sh -install-macos Catalina -installmedia-boot 
       ```
-2. Installation media has the highest boot priority after default drive.
-
+2. Installation media has the next boot priority after default drive.
 
 3. Other drives' boot order meets this script arguments pass order.
 
@@ -147,7 +148,7 @@ is needed to be investigated. Luckily, everything works fine with glib v2.58.3.
 ### vmnet.Framework networking
 
 1. Requires sudo
-2. This networking type is unstable.
+2. This networking type may be unstable.
 
 ## Directory content
 
@@ -156,7 +157,7 @@ is needed to be investigated. Luckily, everything works fine with glib v2.58.3.
 
 - [src-build-scripts/*](src-build-scripts) - scripts to download and build tools from sources
 
-- [create-install-img.sh](../create-install-img.sh) - Install disk image creation script. Requires sudo
+- [../create-install-img.sh](../create-install-img.sh) - Install disk image creation script. Requires sudo
   privileges!
 
 - [qemu-system-wrapper.sh](qemu-system-wrapper.sh) - Wrapper for qemu-system-x86_64.
