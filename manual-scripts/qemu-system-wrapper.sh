@@ -181,7 +181,7 @@ for NETDEV_ID in "${NETDEVS_IDS[@]}"; do
 
   NETCARD_BOOTINDEX=$((BOOTINDEX_COUNTER++))
   NETCARDS_OPTIONS+=(
-    -device "e1000-82545em${MACADDR_OPTION},netdev=$NETDEV_ID,bootindex=$NETCARD_BOOTINDEX"
+    -device "vmxnet3${MACADDR_OPTION},netdev=$NETDEV_ID,bootindex=$NETCARD_BOOTINDEX"
   )
 done
 
