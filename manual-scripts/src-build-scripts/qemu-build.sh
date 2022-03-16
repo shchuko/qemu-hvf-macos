@@ -5,11 +5,14 @@ set -euo pipefail
 #  retrieve and build recent qemu v6.1.0 which includes patches:
 #  - rdmsr 35H: https://github.com/qemu/qemu/commit/027ac0cb516cca4ce8a88dcca2f759c77e0e374b
 #  - vmware-cpuid-freq: https://github.com/qemu/qemu/commit/3b502b0e470867369ba6e0a94e9ba6d91bb176c2
-#  - vmnet-* netdevs
-#  uses GitHub mirror because of --filter=blob:none support
+#  - vmnet-* netdevs https://patchew.org/QEMU/20220315230741.21578-1-Vladislav.Yaroshchuk@jetbrains.com/
+#  - isa-applesmc hostosk extension https://patchew.org/QEMU/20220113152836.60398-1-yaroshchuk2000@gmail.com/
+#
 
 QEMU_GIT=${QEMU_GIT:-"https://github.com/shchuko/qemu.git"}
-QEMU_BRANCH=${QEMU_BRANCH:-"v6.1.0-vmnet-v3-hostosk-v3-br"}
+# Use branch with vmnet netdevs and isa-applesmc.hostosk features
+# not reached upstream yet.
+QEMU_BRANCH=${QEMU_BRANCH:-"v6.2.0-vmnet-v20-hostosk-v8"}
 QEMU_DIR="$PWD/qemu"
 
 QEMU_DESTDIR=${DESTDIR:-"$PWD/destdir"}
