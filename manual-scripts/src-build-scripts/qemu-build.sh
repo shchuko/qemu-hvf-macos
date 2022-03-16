@@ -48,5 +48,6 @@ fi
 cd "$QEMU_DIR"
 PKG_CONFIG_PATH="$CUSTOM_PKG_CONFIG_PATH:$PKG_CONFIG_PATH" ./configure \
   --target-list=x86_64-softmmu --prefix="$QEMU_DESTDIR"
+make qemu-system-x86_64
 make install
 cd -
