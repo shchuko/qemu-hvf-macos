@@ -12,4 +12,3 @@ echo "#!/bin/bash
 PATH=$DESTDIR/bin:$PATH
 LOOKUP_PREFIX=$DESTDIR
 " > source.sh
-chmod u+x source.sh
