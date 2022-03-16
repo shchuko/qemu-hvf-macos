@@ -99,7 +99,7 @@
     <qemu:arg value='-netdev'/>
     <qemu:arg value='vmnet-shared,id=vmnet0'/>
     <qemu:arg value='-device'/>
-    <qemu:arg value='e1000-82545em,netdev=vmnet0,bus=pcie.0,addr=0x1e'/>
+    <qemu:arg value='vmxnet3,netdev=vmnet0,bus=pcie.0,addr=0x1e'/>
     <!--    virtio-net-pci works unstable, to be investigated   -->
     <!--    <qemu:arg value='virtio-net-pci,netdev=vmnet0,bus=pcie.0,addr=0x1e'/>-->
   </qemu:commandline>
