@@ -33,11 +33,11 @@ Now tested with `macOS 10.15.7 Catalina`
 
 - Shutdown the VM using [AppleQEMUGuestAgent](../AppleQEMUGuestAgent) (preferred):
 
-  `sudo virsh shutdown --mode agent Catalina`
+  `sudo virsh shutdown --mode agent Catalina` or just `sudo virsh shutdown Catalina`
 
 - Shutdown the VM: ACPI mode (sometimes does not work, not investigated):
 
-  `sudo virsh shutdown Catalina` or `sudo virsh shutdown --mode acpi Catalina`
+  `sudo virsh shutdown --mode acpi Catalina`
 
 - Destroy the VM:
 
