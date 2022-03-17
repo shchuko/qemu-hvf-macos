@@ -85,7 +85,7 @@
     <!--    https://lists.gnu.org/archive/html/qemu-devel/2017-01/msg04344.html    -->
     <!--    https://patchew.org/QEMU/20210122150518.3551-1-yaroshchuk2000@gmail.com/    -->
     <qemu:arg value='-cpu'/>
-    <qemu:arg value='host,vmware-cpuid-freq=on'/>
+    <qemu:arg value='host,vmware-cpuid-freq=on,acpi=on'/>
 
     <!--    Enable Hypervisor.Framework acceleration overriding '-machine' option    -->
     <qemu:arg value='-machine'/>
