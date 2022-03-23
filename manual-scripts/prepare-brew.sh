@@ -5,6 +5,6 @@ brew tap "$TAP_NAME"
 brew update
 brew install "$TAP_NAME/ovmf-darwin" "$TAP_NAME/qemu"
 
-echo "#!/bin/bash
-LOOKUP_PREFIX=$(brew config | grep HOMEBREW_PREFIX | awk 'FS=" " {print $2}')
-" > source.sh
+if [[ -f "env_override.sh" ]]; then
+  rm "env_override.sh"
+fi

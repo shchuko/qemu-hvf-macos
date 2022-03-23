@@ -9,6 +9,6 @@ cd src-build-scripts
 cd -
 
 echo "#!/bin/bash
-PATH=$DESTDIR/bin:$PATH
-LOOKUP_PREFIX=$DESTDIR
-" > source.sh
+export PATH=$DESTDIR/bin:$PATH
+export LOOKUP_PREFIX=$DESTDIR
+" > env_override.sh

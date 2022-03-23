@@ -44,7 +44,7 @@ while [[ $# -gt 0 ]]; do
     echo -e "notes:"
     echo -e "${SEP_1}* drives' boot order meets this script arguments pass order"
     echo -e "${SEP_1}* netdevs' boot order meets this script arguments pass order"
-    echo -e "${SEP_1}* this script requires 'source.sh' created by 'prepare-*.sh'"
+    echo -e "${SEP_1}* this script requires set LOOKUP_PREFIX (ex. /usr/local)"
     exit 0
     ;;
 
@@ -186,13 +186,6 @@ for NETDEV_ID in "${NETDEVS_IDS[@]}"; do
 done
 
 # Create UEFI from templates
-if [[ ! -f "source.sh" ]]; then
-  echo "Error: source.sh not found"
-  exit 1
-fi
-
-source source.sh
-
 FIRMWARE_TEMPLATES_DIR="$LOOKUP_PREFIX/share/OVMF_DARWIN"
 FIRMWARE_DIR="$PWD/Firmware"
 FIRMWARE_CODE="OVMF_DARWIN_CODE.fd"

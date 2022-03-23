@@ -64,7 +64,6 @@ while [[ $# -gt 0 ]]; do
     echo -e "${SEP_1}* drives' boot order meets this script arguments pass order"
     echo -e "${SEP_1}* netdevs' boot order meets this script arguments pass order"
     echo -e "${SEP_1}* drives have higher boot priority than netdevs"
-    echo -e "${SEP_1}* this script requires 'source.sh' created by 'prepare-*.sh'"
     exit 0
     ;;
   -install-macos)
@@ -156,15 +155,16 @@ while [[ $# -gt 0 ]]; do
   shift
 done
 
-##################
-## UPDATE $PATH ##
-##################
-if [[ ! -f "source.sh" ]]; then
-  echo "Error: source.sh not found"
-  exit 1
+#####################################
+## UPDATE $PATH and $LOOKUP_PREFIX ##
+#####################################
+if [[ -f "env_override.sh" ]]; then
+  source env_override.sh
+  echo "Load PREFIX and PATH from env_override.sh (using tools built from source)"
+else
+  export LOOKUP_PREFIX="$(brew config | grep HOMEBREW_PREFIX | awk 'FS=" " {print $2}')"
+  echo "Preserve default PREFIX and PATH (using brew-provided tools)"
 fi
-
-source source.sh
 
 #########################
 ## CREATE DRIVE IMAGES ##
