@@ -16,7 +16,7 @@ sed -i '' 's/#unix_sock_ro_perms/unix_sock_ro_perms/' "$LIBVIRTDFILE"
 # set  unix_sock_rw_perms = "0777"
 sed -i ''  's/#unix_sock_rw_perms/unix_sock_rw_perms/' "$LIBVIRTDFILE"
 
-LIBVIRTFILE="$PREFIX/etc/libvirt/libvirtd.conf"
+LIBVIRTFILE="$PREFIX/etc/libvirt/libvirt.conf"
 LBACKUPFILEBACKUPFILE="$LIBVIRTFILE."$(date +%s)
 cp "$LIBVIRTFILE" "$LBACKUPFILEBACKUPFILE"
 # set
