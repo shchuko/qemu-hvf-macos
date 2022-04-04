@@ -22,3 +22,9 @@ cp "$LIBVIRTFILE" "$LBACKUPFILEBACKUPFILE"
 # set
 sed -i ''  's/#uri_default/uri_default/' "$LIBVIRTFILE"
 
+LIBVIRTFILE_USER="$HOME/.config/libvirt/libvirt.conf"
+if [[ -f "$LIBVIRTFILE_USER" ]]; then
+    LIBVIRTFILE_USER_BACKUPFILE="$LIBVIRTFILE_USER."$(date +%s)
+    cp "$LIBVIRTFILE_USER" "$LIBVIRTFILE_USER_BACKUPFILE"
+fi
+cp "$LIBVIRTFILE" "$LIBVIRTFILE_USER"
