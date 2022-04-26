@@ -59,3 +59,6 @@ Now tested with `macOS 10.15.7 Catalina`
 
 For some reason networking via `virtio-net-pci` does not work properly with Catalina guest.
 `vmxnet3` used instead.
+
+On recent macOS Monterey you can meet `Operation not permitted` problem while trying to run QEMU via libvirt. 
+Once this happen, try to give `Full disk access` to `libvirt` in `System Preferences` -> `Security & Privacy`.
